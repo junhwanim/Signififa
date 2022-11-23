@@ -1,153 +1,126 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
-import { DataContext } from "../storage/DataContext";
-import { colors, fonts } from "../styles/colors";
-import Teams from "./Teams";
+import { colors } from "../styles/colors";
+import { ReactComponent as RemoveSvg } from "../images/remove.svg";
 
-const ScoreBoard = () => {
-  const { fifaData, setFifaData, team, setTeam } = useContext(DataContext);
-
-  let initialData = {
-    id: "",
-    teamName: "",
-    won: 0,
-    lost: 0,
-    tie: 0,
-    points: 0,
-    members: [],
-  };
-
-  const handleChangeTeam = (e) => {
-    const { name, value } = e.target;
-    setTeam({ ...team, [name]: value });
-  };
-
-  const handleSubmitTeam = () => {
-    setFifaData([
-      ...fifaData,
-      {
-        ...initialData,
-        id: team.teamName,
-        teamName: team.teamName,
-        members: {
-          firstMember: team.firstMember,
-          secondMember: team.secondMember,
-        },
-      },
-    ]);
-    setTeam({});
+const TeamBoard = ({ teamsData, setTeamsData }) => {
+  const removeTeam = (id) => {
+    const newTeams = teamsData.filter((team) => team.id !== id);
+    setTeamsData(newTeams);
   };
 
   return (
-    <>
+    <TopContainer>
       <MainTitle>Team Board</MainTitle>
-      <ScoreBoardContainer>
-        <CreateTeamContainer>
-          <InputContainer>
-            <Label htmlFor="team-name">Team Name:</Label>
-            <Input
-              type="text"
-              name="teamName"
-              id="team-name"
-              value={team.teamName || ""}
-              onChange={handleChangeTeam}
-            />
-          </InputContainer>
-          <InputContainer>
-            <Label htmlFor="first-member-name">Member2 Name:</Label>
-            <Input
-              type="text"
-              name="firstMember"
-              id="first-member-name"
-              value={team.firstMember || ""}
-              onChange={handleChangeTeam}
-            />
-          </InputContainer>
-          <InputContainer>
-            <Label htmlFor="second-member-name">Member2 Name:</Label>
-            <Input
-              type="text"
-              name="secondMember"
-              id="second-member-name"
-              value={team.secondMember || ""}
-              onChange={handleChangeTeam}
-            />
-          </InputContainer>
-          <CreateTeamButton type="button" onClick={handleSubmitTeam}>
-            Create Team
-          </CreateTeamButton>
-        </CreateTeamContainer>
-        <Teams fifaData={fifaData} setFifaData={setFifaData}/>
-      </ScoreBoardContainer>
-    </>
+      <Divider></Divider>
+      <Table>
+        <Thead>
+          <TheadRow>
+            <TheadHeader>Team</TheadHeader>
+            <TheadHeader>Member 1</TheadHeader>
+            <TheadHeader>Member 2</TheadHeader>
+            <TheadHeader></TheadHeader>
+          </TheadRow>
+        </Thead>
+        <Tbody>
+          {teamsData.length > 0 &&
+            teamsData.map((team, index) => {
+              return (
+                <TbodyRow key={index}>
+                  <TbodyHeader>{team.teamName}</TbodyHeader>
+                  <TbodyHeader>{team.members.firstMember}</TbodyHeader>
+                  <TbodyHeader>{team.members.secondMember}</TbodyHeader>
+                  <TbodyHeader>
+                    <SvgButton
+                      type="button"
+                      onClick={() => removeTeam(team.id)}
+                    >
+                      <RemoveSvg />
+                    </SvgButton>
+                  </TbodyHeader>
+                </TbodyRow>
+              );
+            })}
+        </Tbody>
+      </Table>
+      {!teamsData.length > 0 && <NoTeam>No team created</NoTeam>}
+    </TopContainer>
   );
 };
 
 const MainTitle = styled.h2`
   color: ${colors.black};
   font-size: 30px;
-`;
-
-const ScoreBoardContainer = styled.section`
-  width: 40%;
-  margin: 15px 30px 15px 30px;
-  padding: 10px;
-  border-radius: 30px;
-  border: 2px solid ${colors.orange};
-  box-sizing: border-box;
-  max-width: 1000px;
-  background-color: ${colors.white};
-`;
-
-const CreateTeamContainer = styled.div`
-  width: 100%;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  width: 100%;
-`;
-
-const Label = styled.label`
-  font-size: 20px;
-`;
-
-const Input = styled.input`
-  background-color: transparent;
-  border: 2px solid ${colors.black};
-  border-radius: 30px;
-  height: 40px;
-  padding: 10px;
-  box-sizing: border-box;
-  display: flex;
-  flex: 1;
-  width: 100%;
-`;
-
-const CreateTeamButton = styled.button`
+  text-align: center;
   margin-top: 20px;
-  border-radius: 30px;
-  font-size: 15px;
-  font-weight: 700;
-  font-family: ${fonts.josefin};
-  border: none;
-  background-color: ${colors.orange};
-  color: ${colors.linen};
-  box-sizing: border-box;
-  padding: 15px;
-  cursor: pointer;
-  flex: 1;
+`;
+
+const TopContainer = styled.div`
   width: 100%;
 `;
 
-export default ScoreBoard;
+const Divider = styled.div`
+  height: 3px;
+  background: ${colors.sealBrown};
+  margin: 20px 0 10px 0;
+`;
+
+const Table = styled.table`
+  width: 100%;
+`;
+
+const Thead = styled.thead`
+  width: 100%;
+`;
+
+const Tbody = styled.tbody`
+  width: 100%;
+  overflow-y: scroll;
+  height: 100%;
+`;
+
+const TheadRow = styled.tr`
+  border-bottom: 3px solid ${colors.sealBrown};
+`;
+
+const TheadHeader = styled.th`
+  padding: 0px 5px 10px 5px;
+  text-align: start;
+  vertical-align: middle;
+  width: 30%;
+
+  &:last-child {
+    text-align: end;
+    width: 10%;
+  }
+`;
+
+const TbodyRow = styled.tr`
+  box-shadow: 0 4px 6px -6px ${colors.sealBrown};
+`;
+
+const TbodyHeader = styled.th`
+  padding: 5px;
+  text-align: start;
+  vertical-align: middle;
+  font-weight: 400;
+  text-transform: lowercase;
+`;
+
+const SvgButton = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    fill: ${colors.sealBrown};
+  }
+`;
+
+const NoTeam = styled.p`
+  padding: 100px 0px 10px;
+  text-align: center;
+  color: ${colors.grey};
+`;
+
+export default TeamBoard;

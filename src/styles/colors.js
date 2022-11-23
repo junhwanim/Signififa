@@ -6,8 +6,8 @@ export const colors = {
   linen: "#FFEEE4",
   black: "#202020",
   white: "white",
-  grey: "#B8B8B8",
-  red: "#842029",
+  grey: "#808080",
+  red: "red",
 };
 
 export const fonts = {

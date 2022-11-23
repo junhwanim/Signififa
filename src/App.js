@@ -1,12 +1,16 @@
 import styled from "styled-components";
 import Header from "./components/Header";
-import ScoreBoard from "./components/TeamBoard";
+import CreateTeam from "./components/CreateTeam";
+import ScoreBoard from "./components/ScoreBoard";
 
 const App = () => {
   return (
     <AppContainer>
       <Header />
-      <ScoreBoard />
+      <ContentContainer>
+        <CreateTeam />
+        <ScoreBoard />
+      </ContentContainer>
     </AppContainer>
   );
 };
@@ -19,6 +23,13 @@ const AppContainer = styled.main`
   align-items: center;
   box-sizing: border-box;
   padding: 0 30px;
+`;
+
+const ContentContainer = styled.div`
+width: 100%;
+height: 100%;
+display: flex;
+justify-content: center;
 `;
 
 export default App;

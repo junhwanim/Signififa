@@ -34,6 +34,11 @@ const AdminAccessButton = styled.button`
   color: ${colors.linen};
   background-color: ${colors.orange};
   padding: 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${colors.sealBrown};
+  }
 `;
 
 export default Header;
