@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Header from "./components/Header";
 import CreateTeam from "./components/CreateTeam";
 import ScoreBoard from "./components/ScoreBoard";
+import AdminModal from "./components/AdminModal";
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
         <CreateTeam />
         <ScoreBoard />
       </ContentContainer>
+      <AdminModal />
     </AppContainer>
   );
 };
@@ -26,10 +28,15 @@ const AppContainer = styled.main`
 `;
 
 const ContentContainer = styled.div`
-width: 100%;
-height: 100%;
-display: flex;
-justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin-top: 110px;
+  display: flex;
+  justify-content: center;
+
+  @media screen and (max-width: 935px) {
+    flex-direction: column;
+  }
 `;
 
 export default App;

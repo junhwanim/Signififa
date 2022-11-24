@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { colors } from "../styles/colors";
 import { ReactComponent as RemoveSvg } from "../images/remove.svg";
 
-const TeamBoard = ({ teamsData, setTeamsData }) => {
+const TeamBoard = ({ teamsData, setTeamsData, isAdmin }) => {
   const removeTeam = (id) => {
     const newTeams = teamsData.filter((team) => team.id !== id);
     setTeamsData(newTeams);
@@ -19,7 +19,7 @@ const TeamBoard = ({ teamsData, setTeamsData }) => {
             <TheadHeader>Team</TheadHeader>
             <TheadHeader>Member 1</TheadHeader>
             <TheadHeader>Member 2</TheadHeader>
-            <TheadHeader></TheadHeader>
+            {isAdmin && <TheadHeader></TheadHeader>}
           </TheadRow>
         </Thead>
         <Tbody>
@@ -30,14 +30,16 @@ const TeamBoard = ({ teamsData, setTeamsData }) => {
                   <TbodyHeader>{team.teamName}</TbodyHeader>
                   <TbodyHeader>{team.members.firstMember}</TbodyHeader>
                   <TbodyHeader>{team.members.secondMember}</TbodyHeader>
-                  <TbodyHeader>
-                    <SvgButton
-                      type="button"
-                      onClick={() => removeTeam(team.id)}
-                    >
-                      <RemoveSvg />
-                    </SvgButton>
-                  </TbodyHeader>
+                  {isAdmin && (
+                    <TbodyHeader>
+                      <SvgButton
+                        type="button"
+                        onClick={() => removeTeam(team.id)}
+                      >
+                        <RemoveSvg />
+                      </SvgButton>
+                    </TbodyHeader>
+                  )}
                 </TbodyRow>
               );
             })}
@@ -75,8 +77,6 @@ const Thead = styled.thead`
 
 const Tbody = styled.tbody`
   width: 100%;
-  overflow-y: scroll;
-  height: 100%;
 `;
 
 const TheadRow = styled.tr`
@@ -87,16 +87,18 @@ const TheadHeader = styled.th`
   padding: 0px 5px 10px 5px;
   text-align: start;
   vertical-align: middle;
-  width: 30%;
+  width: 33%;
 
   &:last-child {
-    text-align: end;
-    width: 10%;
+    text-align: ${({ isAdmin }) => (isAdmin ? "end" : "start")};
+    width: ${({ isAdmin }) => (isAdmin ? "10%" : "33%")};
   }
 `;
 
 const TbodyRow = styled.tr`
-  box-shadow: 0 4px 6px -6px ${colors.sealBrown};
+  &:not(:last-child) {
+    box-shadow: 0 4px 6px -6px ${colors.sealBrown};
+  }
 `;
 
 const TbodyHeader = styled.th`
@@ -105,6 +107,7 @@ const TbodyHeader = styled.th`
   vertical-align: middle;
   font-weight: 400;
   text-transform: lowercase;
+  height: 29.5px;
 `;
 
 const SvgButton = styled.button`

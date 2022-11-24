@@ -12,6 +12,7 @@ const CreateTeam = () => {
     setCurrentTeam,
     teamInputErrorMessage,
     setTeamInputErrorMessage,
+    isAdmin,
   } = useContext(DataContext);
 
   let initialValues = {
@@ -117,7 +118,11 @@ const CreateTeam = () => {
               : "Create Team"}
           </CreateTeamButton>
         </CreateTeamContainer>
-        <TeamBoard teamsData={teamsData} setTeamsData={setTeamsData} />
+        <TeamBoard
+          teamsData={teamsData}
+          setTeamsData={setTeamsData}
+          isAdmin={isAdmin}
+        />
       </TopContainer>
     </>
   );
@@ -125,7 +130,7 @@ const CreateTeam = () => {
 
 const TopContainer = styled.section`
   width: 40%;
-  margin: 20px 10px 15px 10px;
+  margin: 10px;
   padding: 10px;
   border-radius: 30px;
   border: 2px solid ${colors.orange};
@@ -133,6 +138,10 @@ const TopContainer = styled.section`
   background-color: ${colors.white};
   max-height: 795px;
   height: 795px;
+
+  @media screen and (max-width: 935px) {
+    width: 100%;
+  }
 `;
 
 const MainTitle = styled.h2`

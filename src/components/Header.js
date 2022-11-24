@@ -1,22 +1,36 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { colors, fonts } from "../styles/colors";
+import { DataContext } from "../storage/DataContext";
 
 const Header = () => {
+  const { handleClickAdmin, isAdmin, setIsAdmin } = useContext(DataContext);
+
   return (
     <HeaderContainer>
       <Logo>SIGNIFIFA</Logo>
-      <AdminAccessButton type="button">Admin Access</AdminAccessButton>
+      {!isAdmin ? (
+        <AdminAccessButton type="button" onClick={handleClickAdmin}>
+          Admin Access
+        </AdminAccessButton>
+      ) : (
+        <AdminAccessButton type="button" onClick={() => setIsAdmin(!isAdmin)}>
+          Logout
+        </AdminAccessButton>
+      )}
     </HeaderContainer>
   );
 };
 
 const HeaderContainer = styled.header`
   width: 100%;
-  padding: 30px 0;
+  position: fixed;
+  padding: 30px 15px;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
+  background-color: ${colors.linen};
+  z-index: 10;
 `;
 
 const Logo = styled.h1`
