@@ -25,7 +25,7 @@ const AdminModal = () => {
   const handleSubmitAdminCode = (e) => {
     if (!adminCode.length > 0) {
       setAdminInputErrorMessage("Please enter code");
-    } else if (adminCode != 1234) {
+    } else if (adminCode !== "1234") {
       setAdminInputErrorMessage("code is incorrect");
     } else {
       setIsAdmin(!isAdmin);
